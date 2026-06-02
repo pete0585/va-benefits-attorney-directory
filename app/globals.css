@@ -20,4 +20,25 @@
       @apply grid-cols-1;
     }
   }
+  .prose-guide h2 {
+    @apply text-xl font-bold text-gray-900 mt-8 mb-3;
+  }
+  .prose-guide h3 {
+    @apply text-lg font-semibold text-gray-800 mt-6 mb-2;
+  }
+  .prose-guide p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  .prose-guide ul {
+    @apply list-disc list-outside ml-5 space-y-1.5 mb-4 text-gray-700;
+  }
+  .prose-guide ol {
+    @apply list-decimal list-outside ml-5 space-y-1.5 mb-4 text-gray-700;
+  }
+  .prose-guide li {
+    @apply leading-relaxed;
+  }
+  .prose-guide strong {
+    @apply font-semibold text-gray-900;
+  }
 }

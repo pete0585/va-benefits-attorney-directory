@@ -165,3 +165,20 @@ export async function getAllSlugs(): Promise<string[]> {
   if (error) return []
   return data?.map((r) => r.slug) ?? []
 }
+
+export async function getListingsByCity(state: string, city: string): Promise<Listing[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('va_listings')
+    .select('*')
+    .eq('state', state.toUpperCase())
+    .ilike('city', city)
+    .eq('is_active', true)
+    .eq('is_approved', true)
+    .order('listing_tier', { ascending: false })
+    .order('full_name', { ascending: true })
+    .limit(20)
+
+  if (error) return []
+  return (data as Listing[]) ?? []
+}
