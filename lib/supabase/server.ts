@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
 export async function createClient() {
@@ -48,5 +49,14 @@ export async function createServiceClient() {
         },
       },
     }
+  )
+}
+
+// Use this in generateStaticParams, sitemaps, and any build-time data fetching
+// that runs outside a request context (no cookies available).
+export function createStaticClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 }
