@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createStaticClient } from '@/lib/supabase/server'
 import type { Listing, SearchFilters } from '@/lib/types'
 
 const PAGE_SIZE = 20
@@ -134,8 +134,9 @@ export async function getTotalCount(): Promise<number> {
   return count ?? 0
 }
 
+// Uses createStaticClient — safe to call from generateStaticParams and sitemaps (no request context)
 export async function getStateCounts(): Promise<{ state: string; count: number }[]> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
   const { data, error } = await supabase
     .from('va_listings')
     .select('state')
@@ -154,8 +155,9 @@ export async function getStateCounts(): Promise<{ state: string; count: number }
     .sort((a, b) => b.count - a.count)
 }
 
+// Uses createStaticClient — safe to call from generateStaticParams and sitemaps (no request context)
 export async function getAllSlugs(): Promise<string[]> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
   const { data, error } = await supabase
     .from('va_listings')
     .select('slug')
