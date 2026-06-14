@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: 'Find VA-Accredited Attorneys | FindVAAttorney.com',
     template: '%s | FindVAAttorney.com',
   },
-  description: 'Find VA-accredited attorneys for your disability claim, appeal, or rating increase. Search 35,000+ VA-accredited lawyers by state and practice area — free to search.',
+  description: 'Find VA-accredited attorneys for your disability claim, appeal, or rating increase. Search 5,000+ VA-accredited lawyers by state and practice area — free to search.',
   keywords: ['VA disability attorney', 'VA accredited attorney', 'veterans benefits lawyer', 'VA disability lawyer', 'TDIU attorney', 'veterans disability appeal attorney'],
   openGraph: {
     type: 'website',
