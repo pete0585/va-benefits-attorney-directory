@@ -22,7 +22,7 @@ export default function ListingDetail({ listing, monthlyViews }: ListingDetailPr
 
   const isVerified = listing.listing_tier === 'verified' || listing.listing_tier === 'featured'
   const isFeatured = listing.listing_tier === 'featured'
-  const isClaimed = listing.listing_tier !== 'unclaimed' && listing.listing_tier != null
+  const isClaimed = listing.listing_tier !== 'free' && listing.listing_tier != null
 
   async function handleContact(e: React.FormEvent) {
     e.preventDefault()
