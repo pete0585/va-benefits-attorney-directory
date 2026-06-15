@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import ListingDetail from '@/components/ListingDetail'
 import { getListingBySlug } from '@/lib/data'
 import { STATE_NAMES } from '@/lib/utils'
+import { createServiceClient } from '@/lib/supabase/server'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -37,8 +38,17 @@ export const revalidate = 3600
 export default async function ListingPage({ params }: PageProps) {
   const { slug } = await params
   const listing = await getListingBySlug(slug)
-
   if (!listing) notFound()
 
-  return <ListingDetail listing={listing} />
+  const supabase = await createServiceClient()
+  const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
+  const { count: viewCount } = await supabase
+    .from('listing_views')
+    .select('*', { count: 'exact', head: true })
+    .eq('directory_slug', 'va-benefits-attorney')
+    .eq('listing_id', String(listing.id))
+    .gte('viewed_at', monthStart)
+  const monthlyViews = viewCount ?? 0
+
+  return <ListingDetail listing={listing} monthlyViews={monthlyViews} />
 }

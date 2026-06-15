@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { Shield, CheckCircle, Loader2, AlertCircle, Star } from 'lucide-react'
+import { createClient } from '@supabase/supabase-js'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -19,6 +20,19 @@ export default function ClaimPage({ params, searchParams }: PageProps) {
   const [submitting, setSubmitting] = useState(false)
   const [verifyState, setVerifyState] = useState<'idle' | 'verifying' | 'success' | 'error'>('idle')
   const [showUpgrade, setShowUpgrade] = useState(false)
+  const [monthlyViews, setMonthlyViews] = useState(0)
+
+  useEffect(() => {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+    const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
+    supabase
+      .from('listing_views')
+      .select('*', { count: 'exact', head: true })
+      .eq('directory_slug', 'va-benefits-attorney')
+      .eq('listing_id', id)
+      .gte('viewed_at', monthStart)
+      .then(({ count }) => { if (count !== null) setMonthlyViews(count) })
+  }, [id])
 
   useEffect(() => {
     if (token) {
@@ -109,6 +123,30 @@ export default function ClaimPage({ params, searchParams }: PageProps) {
           <p className="text-gray-600">
             Your profile is now claimed. Upgrade to start receiving inquiries from veterans.
           </p>
+        </div>
+
+        <div className="bg-white rounded-xl border border-surface-border shadow-sm p-6 mb-6">
+          <div className='text-center mb-6'>
+            <div className='text-5xl font-bold text-gray-900'>{monthlyViews}</div>
+            <div className='text-gray-500 mt-1'>people viewed your profile this month</div>
+            <div className='mt-3 text-red-600 font-semibold'>0 could contact you — your phone and website are hidden</div>
+          </div>
+          <div className='space-y-3 mb-6 text-left'>
+            {([
+              ['Your phone number visible to searchers', 'They can call you directly from your listing'],
+              ['Your website linked', 'Drive traffic to your practice site'],
+              ['Your full bio displayed', 'Build trust before they reach out'],
+              ['Verified badge', 'Stand out from unclaimed profiles'],
+            ] as [string, string][]).map(([title, sub]) => (
+              <div key={title} className='flex items-start gap-3'>
+                <span className='text-green-500 text-lg leading-tight'>✓</span>
+                <div>
+                  <div className='font-medium text-gray-900'>{title}</div>
+                  <div className='text-sm text-gray-500'>{sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -8,18 +8,21 @@ import {
 } from 'lucide-react'
 import type { Listing } from '@/lib/types'
 import { PRACTICE_AREAS, STATE_NAMES, formatPhone } from '@/lib/utils'
+import { ViewTracker } from './ViewTracker'
 
 interface ListingDetailProps {
   listing: Listing
+  monthlyViews: number
 }
 
-export default function ListingDetail({ listing }: ListingDetailProps) {
+export default function ListingDetail({ listing, monthlyViews }: ListingDetailProps) {
   const [contactSent, setContactSent] = useState(false)
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
 
   const isVerified = listing.listing_tier === 'verified' || listing.listing_tier === 'featured'
   const isFeatured = listing.listing_tier === 'featured'
+  const isClaimed = listing.listing_tier !== 'unclaimed' && listing.listing_tier != null
 
   async function handleContact(e: React.FormEvent) {
     e.preventDefault()
@@ -47,6 +50,7 @@ export default function ListingDetail({ listing }: ListingDetailProps) {
 
   return (
     <>
+      <ViewTracker listingId={String(listing.id)} directorySlug='va-benefits-attorney' />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -124,7 +128,7 @@ export default function ListingDetail({ listing }: ListingDetailProps) {
                 </div>
               </div>
 
-              {listing.bio && (
+              {isClaimed && listing.bio && (
                 <div className="mt-6 pt-6 border-t border-surface-border">
                   <h2 className="font-semibold text-gray-900 mb-3">About</h2>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">{listing.bio}</p>
@@ -199,41 +203,68 @@ export default function ListingDetail({ listing }: ListingDetailProps) {
           </div>
 
           <div className="space-y-5">
-            <div className="bg-white rounded-xl border border-surface-border shadow-sm p-6">
-              <h2 className="font-semibold text-gray-900 mb-4">Contact</h2>
-              <div className="space-y-3">
-                {listing.phone && (
-                  <a
-                    href={`tel:${listing.phone}`}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-brand-navy text-white hover:bg-brand-navy-dark transition-colors"
-                  >
-                    <Phone className="w-5 h-5 shrink-0" aria-label="Phone" />
-                    <div>
-                      <p className="text-xs opacity-75">Call Now</p>
-                      <p className="font-semibold">{formatPhone(listing.phone)}</p>
-                    </div>
-                  </a>
-                )}
-                {listing.website && isVerified && (
-                  <a
-                    href={listing.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-lg border border-surface-border hover:border-brand-navy/30 hover:bg-surface transition-colors"
-                  >
-                    <Globe className="w-5 h-5 text-gray-500 shrink-0" aria-label="Website" />
-                    <div>
-                      <p className="text-xs text-gray-500">Website</p>
-                      <p className="text-sm font-medium text-brand-navy truncate">{listing.website.replace(/^https?:\/\//, '')}</p>
-                    </div>
-                  </a>
-                )}
-                {listing.consultation_fee && (
-                  <div className="text-sm text-gray-600 bg-surface px-4 py-3 rounded-lg">
-                    <span className="font-medium">Consultation:</span> {listing.consultation_fee}
-                  </div>
+            {isClaimed && (
+              <div className='rounded-xl border border-blue-200 bg-blue-50 p-4'>
+                <p className='text-xs font-semibold uppercase tracking-wide text-blue-600'>Profile Activity</p>
+                <p className='mt-1 text-3xl font-bold text-blue-900'>{monthlyViews}</p>
+                <p className='text-sm text-blue-700'>people viewed your profile this month</p>
+                {listing.listing_tier === 'free' && (
+                  <p className='mt-2 text-xs text-blue-600'>
+                    0 could contact you.{' '}
+                    <a href={`/claim/${listing.id}?upgrade=true`} className='underline font-medium'>
+                      Upgrade to be reachable →
+                    </a>
+                  </p>
                 )}
               </div>
+            )}
+
+            <div className="bg-white rounded-xl border border-surface-border shadow-sm p-6">
+              <h2 className="font-semibold text-gray-900 mb-4">Contact</h2>
+              {isClaimed ? (
+                <div className="space-y-3">
+                  {listing.phone && (
+                    <a
+                      href={`tel:${listing.phone}`}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-brand-navy text-white hover:bg-brand-navy-dark transition-colors"
+                    >
+                      <Phone className="w-5 h-5 shrink-0" aria-label="Phone" />
+                      <div>
+                        <p className="text-xs opacity-75">Call Now</p>
+                        <p className="font-semibold">{formatPhone(listing.phone)}</p>
+                      </div>
+                    </a>
+                  )}
+                  {listing.website && (
+                    <a
+                      href={listing.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-3 rounded-lg border border-surface-border hover:border-brand-navy/30 hover:bg-surface transition-colors"
+                    >
+                      <Globe className="w-5 h-5 text-gray-500 shrink-0" aria-label="Website" />
+                      <div>
+                        <p className="text-xs text-gray-500">Website</p>
+                        <p className="text-sm font-medium text-brand-navy truncate">{listing.website.replace(/^https?:\/\//, '')}</p>
+                      </div>
+                    </a>
+                  )}
+                  {listing.consultation_fee && (
+                    <div className="text-sm text-gray-600 bg-surface px-4 py-3 rounded-lg">
+                      <span className="font-medium">Consultation:</span> {listing.consultation_fee}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4 text-center'>
+                  <p className='text-sm text-gray-500'>
+                    Phone, website, and bio are only visible after this provider claims their listing.
+                  </p>
+                  <a href={`/claim/${listing.id}`} className='mt-2 inline-block text-sm font-medium text-blue-600 hover:underline'>
+                    Is this you? Claim your free profile →
+                  </a>
+                </div>
+              )}
 
               {isVerified && (
                 <div className="mt-4 pt-4 border-t border-surface-border">
