@@ -37,8 +37,8 @@ export default function ListingDetail({ listing, monthlyViews }: ListingDetailPr
     '@type': 'Attorney',
     name: listing.full_name,
     description: listing.bio ?? `VA-accredited attorney in ${listing.city}, ${listing.state}`,
-    url: listing.website ?? undefined,
-    telephone: listing.phone ?? undefined,
+    url: isClaimed ? (listing.website ?? undefined) : undefined,
+    telephone: isClaimed ? (listing.phone ?? undefined) : undefined,
     address: {
       '@type': 'PostalAddress',
       addressLocality: listing.city,
