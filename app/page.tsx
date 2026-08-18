@@ -9,7 +9,7 @@ import { PRACTICE_AREAS, TOP_STATES, STATE_NAMES } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Find VA-Accredited Attorneys | VA Disability Lawyer Directory',
-  description: 'Denied? Underrated? Find a VA-accredited attorney who fights for veterans. Search the only directory built specifically for VA disability claims, appeals, and rating increases.',
+  description: 'Find a VA-accredited attorney who fights for veterans. Search the only directory built for VA disability claims, appeals, and rating increases.',
   alternates: { canonical: 'https://findvaattorney.com' },
 }
 
