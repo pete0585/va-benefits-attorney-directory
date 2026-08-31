@@ -73,9 +73,9 @@ For production seeding, query the VA OGC database at `va.gov/ogc/apps/accreditat
 
 ## Stripe Products
 
-- **Verified** — $149/year — `price_1Tdsk0GzK9SiblueW8oPfizt`
-- **Featured** — $299/year — `price_1Tdsk1GzK9Sibluej11sMXlP`
-- **Webhook** — `we_1Tdsk9GzK9SiblueiGtk9689`
+- **Verified** — $149/year — `price_...`
+- **Featured** — $299/year — `price_...`
+- **Webhook** — `we_...`
 
 Stripe webhook is already configured. For local testing use Stripe CLI:
 
@@ -121,10 +121,10 @@ Lead routing (Month 6+): $75-150/qualified inquiry routed to paid attorneys.
 
 ## IndexNow
 
-Key: `a578ac87cda0775380cbfee0dde3179b`  
-File: `public/a578ac87cda0775380cbfee0dde3179b.txt`
+Key: `<INDEXNOW_KEY>`  
+File: `public/<INDEXNOW_KEY>.txt`
 
 Submit sitemap after new pages are published:
 ```bash
-node skills/indexnow/indexnow.js submit-sitemap findvaattorney.com a578ac87cda0775380cbfee0dde3179b
+node skills/indexnow/indexnow.js submit-sitemap findvaattorney.com $INDEXNOW_KEY
 ```
