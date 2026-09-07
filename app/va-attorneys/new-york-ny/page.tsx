@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { getCityPageUrl } from "@/lib/city-pages"
 import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
   title: "Best VA Benefits Attorney in New York, NY | VA Benefits Attorney Directory",
   description: "Find va benefits attorney in New York, New York. 44+ listed. Filter by city and compare providers.",
+  alternates: { canonical: getCityPageUrl("new-york-ny") },
 }
 
 async function getListings() {
