@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { getCityPageUrl } from "@/lib/city-pages"
 import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
   title: "Best VA Benefits Attorney in Houston, TX | VA Benefits Attorney Directory",
   description: "Find va benefits attorney in Houston, Texas. 18+ listed. Filter by city and compare providers.",
+  alternates: { canonical: getCityPageUrl("houston-tx") },
 }
 
 async function getListings() {
