@@ -1,3 +1,4 @@
+import {articles as editorialArticles} from '@/lib/editorial-blog'
 import type { MetadataRoute } from 'next'
 import { getCityPageSlugs } from '@/lib/city-pages'
 import { getAllSlugs } from '@/lib/data'
@@ -5,7 +6,7 @@ import { PRACTICE_AREAS, STATE_NAMES } from '@/lib/utils'
 
 export const revalidate = 86400
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function originalSitemap(): Promise<MetadataRoute.Sitemap> {
   const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://findvaattorney.com').replace(/\/$/, '')
   const slugs = await getAllSlugs()
 
@@ -45,3 +46,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticPages, ...cityPages, ...practiceAreaPages, ...statePages, ...listingPages]
 }
+
+export default async function editorialSitemap():Promise<MetadataRoute.Sitemap>{const existing=await originalSitemap();const site="https://findvaattorney.com";return [...existing,{url:site+'/blog',changeFrequency:'weekly'},...editorialArticles().map(p=>({url:site+'/blog/'+p.slug,lastModified:new Date(p.date),changeFrequency:'monthly' as const}))]}
