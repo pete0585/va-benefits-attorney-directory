@@ -98,7 +98,6 @@ export async function getFeaturedListings(): Promise<Listing[]> {
   const { data, error } = await supabase
     .from('va_listings')
     .select('*')
-    .eq('listing_tier', 'featured')
     .eq('is_active', true)
     .eq('is_approved', true)
     .order('full_name', { ascending: true })
