@@ -65,13 +65,22 @@ export default function HomePage() {
               <span className="text-brand-gold text-sm font-semibold uppercase tracking-wider">VA-Accredited Attorneys Only</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
-              Denied? Underrated?<br />
-              <span className="text-brand-gold">Find an attorney who fights for veterans.</span>
-            </h1>
+            Find trusted VA benefits attorneys near you
+          </h1>
             <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-              The only directory built specifically for veterans seeking VA-accredited legal representation.
-              Search by state, practice area, and specialization — 100% free.
-            </p>
+            Browse VA-accredited attorneys by state, rating, and specialty — and connect directly. Free, always.
+          </p>
+          <p className="text-sm text-gray-500 mt-4">
+            Are you a VA benefits attorney?{' '}
+            <a
+              href="https://studiozerohq.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:opacity-80"
+            >
+              List your practice free →
+            </a>
+          </p>
 
             <Suspense fallback={null}>
               <SearchBar large className="max-w-2xl" />
