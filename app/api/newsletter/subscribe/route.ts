@@ -7,7 +7,7 @@ const NICHE = 'va-benefits' as const
 const DIRECTORY_SLUG = 'va-benefits-attorney-directory' as const
 const NEWSLETTER_NAME = 'The Earned Benefits Footnote' as const
 const CONFIRM_URL_BASE = 'https://www.findvaattorney.com/newsletter/confirm'
-const DASHBOARD_URL = 'https://aidam.thestrategicveteran.com'
+const DASHBOARD_URL = 'https://aidam.studiozerohq.com'
 
 export async function POST(req: NextRequest) {
   let email: string, first_name: string | undefined
